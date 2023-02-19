@@ -42,7 +42,7 @@ const userController = {
 
   eachUser: (req, res) => {
     const id = req.params.id
-    User.findById(id).populate('assumptionInfo').populate('volumen')
+    User.findById(id).populate('assumptionData').populate('bienesData').populate('volumenData').populate('costoData').populate('gastosData').populate('precioData').populate('puestosQData').populate('puestosVData')
     .then(data => {
       return res.json({ success: true, response: data })
     })
