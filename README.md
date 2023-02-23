@@ -16,6 +16,12 @@ Devuelve toda la informacion del usuarios de los formularios a medidas que se va
 }
 ```
 
+## /signin - POST
+```{
+	"mail":"",
+	"password":"",
+	
+	}
 ## /assumpventa - POST
 ```
 {
@@ -150,3 +156,19 @@ Devuelve toda la informacion del usuarios de los formularios a medidas que se va
     idUser: "",
 }
 ```
+
+
+##  /assumpfinanciera - POST
+``
+```
+{
+   
+	cobranzas: {},
+	pagoProducto:  {}
+	pagoServicio:  {}
+	stock:'',
+	inversion:  {}
+        idUser: "",
+}
+```
+
