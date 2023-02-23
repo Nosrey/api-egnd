@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
     gastosData: [{ type: mongoose.Schema.ObjectId, ref: "gastos" }],
     precioData: [{ type: mongoose.Schema.ObjectId, ref: "precio" }],
     puestosQData: [{ type: mongoose.Schema.ObjectId, ref: "puestosQ" }],
-    puestosVData: [{ type: mongoose.Schema.ObjectId, ref: "puestosV" }]
+    puestosVData: [{ type: mongoose.Schema.ObjectId, ref: "puestosV" }],
+    assumpFinancierasData: [{ type: mongoose.Schema.ObjectId, ref: "assumpfinancieras" }]
 
 
    
