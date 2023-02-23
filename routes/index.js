@@ -1,4 +1,5 @@
 const express = require('express')
+const assumpFinancierasController = require('../controllers/assumpFinancieras')
 const assumptionVentaController = require('../controllers/assumptionVentaController')
 const bienesController = require('../controllers/bienesController')
 const costoController = require('../controllers/costoController')
@@ -48,6 +49,9 @@ router.route('/puestosq')
 
 router.route('/puestosv')
     .post(puestosVController.newPuestosV)
+    
+router.route('/assumpfinanciera')
+    .post(assumpFinancierasController.newAssumpFinancieras)
 
 
 module.exports = router
