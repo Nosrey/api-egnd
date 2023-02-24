@@ -22,6 +22,7 @@ Devuelve toda la informacion del usuarios de los formularios a medidas que se va
 	"password":"",
 	
 	}
+```
 ## /assumpventa - POST
 ```
 {
