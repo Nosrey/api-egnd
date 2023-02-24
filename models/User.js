@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
     mail: { type: String },
     password: { type: String },
     businessName: { type: String },
-    businessInfo: { type: [{ businessModel: String, currency: String }] },
+    businessInfo: { type: Array },
     assumptionData: [{ type: mongoose.Schema.ObjectId, ref: "assumpventas" }],
     bienesData: [{ type: mongoose.Schema.ObjectId, ref: "bienes" }],
     volumenData: [{ type: mongoose.Schema.ObjectId, ref: "volumen" }],
