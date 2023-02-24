@@ -22,6 +22,7 @@ router.route('/signin')
 
 router.route('/users/:id')
     .get(userController.eachUser)
+    .put(userController.updateBusinessInfo)
 
 router.route('/users')
     .get(userController.allUsers)
