@@ -1,6 +1,33 @@
 const User = require("../models/User")
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const crypto = require("crypto");
+
+
+aws.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY
+});
+
+const s3 = new aws.S3();
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "egnd-bucket",
+
+    key: (req, file, cb) => {
+      crypto.randomBytes(16, (err, hash) => {
+        if (err) cb(err, hash);
+        const fileName = `${hash.toString('hex')}`;
+        cb(null, fileName);
+      });
+    }
+  })
+});
 
 const userController = {
   signUp: async (req, res) => {
@@ -52,16 +79,42 @@ const userController = {
   },
 
   updateBusinessInfo: async (req, res) => {
-    const id = req.params.id
-    User.findByIdAndUpdate(id, req.body)
-      .then(businessInfoUpdated => {
-        res.json({ succes: true, businessInfoUpdated })
-      })
-      .catch(error => {
-        res.json({ succes: false, error })
-      })
+    const id = req.params.id;
+    const { businessName, businessInfo, assumptionInfo, volumenInfo } = req.body;
+    const uploadPromise = new Promise((resolve, reject) => {
+      upload.single('image')(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+          // A Multer error occurred when uploading.
+          console.log(err);
+          reject("Error uploading image.");
+        } else if (err) {
+          // An unknown error occurred when uploading.
+          console.log(err);
+          reject("Error uploading image.");
+        } else {
+          // Everything went fine.
+          resolve();
+        }
+      });
+    });
+  
+    try {
+      await uploadPromise; // Wait for image upload to complete
+      const imagePath = req.file ? req.file.location : null;
+  
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { businessName, businessInfo, assumptionInfo, volumenInfo, imagePath },
+        { new: true }
+      );
+  
+      return res.json({ success: true, response: updatedUser });
+    } catch (error) {
+      console.log(error);
+      return res.json({ success: false, error: error.message });
+    }
   },
-
+  
   allUsers: (req, res) => {
     User.find()
       .then(data => {

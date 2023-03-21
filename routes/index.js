@@ -9,9 +9,8 @@ const puestosQController = require('../controllers/puestosQController')
 const puestosVController = require('../controllers/puestosVController')
 const userController = require('../controllers/userController')
 const volumenController = require('../controllers/volumenController')
-
-
-
+// const multer = require('multer');
+// const upload = multer();
 const router = express.Router()
 
 router.route('/signup')

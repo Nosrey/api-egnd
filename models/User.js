@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String },
     businessName: { type: String },
     businessInfo: { type: Array },
+    imagePath:{type: String},
     assumptionData: [{ type: mongoose.Schema.ObjectId, ref: "assumpventas" }],
     bienesData: [{ type: mongoose.Schema.ObjectId, ref: "bienes" }],
     volumenData: [{ type: mongoose.Schema.ObjectId, ref: "volumen" }],
