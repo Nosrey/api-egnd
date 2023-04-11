@@ -4,51 +4,39 @@ const User = require("../models/User")
 
 const precioController = {
 
+
+
     newPrecio: async (req, res) => {
+        const { countryName, stats, idUser } = req.body;
+      
         try {
-          const precioExists = await Precio.findOne({ idUser: req.body.idUser });
+          let precio = await Precio.findOne({ countryName, idUser });
       
-          if (precioExists) {
-            if (req.body.precio && req.body.precio.length > 0 && req.body.precio[0].pais && req.body.precio[0].pais.length > 0) {
-              precioExists.precio[0].pais = req.body.precio[0].pais;
-            }
-            if (req.body.precio && req.body.precio.length > 0 && req.body.precio[0].canal && req.body.precio[0].canal.length > 0) {
-              precioExists.precio[0].canal = req.body.precio[0].canal;
-            }
-            if (req.body.precio && req.body.precio.length > 0 && req.body.precio[0].year && req.body.precio[0].year.length > 0) {
-              precioExists.precio[0].year = req.body.precio[0].year;
-            }
-            if (req.body.precio && req.body.precio.length > 0 && req.body.precio[0].producto && req.body.precio[0].producto.length > 0 && req.body.precio[0].producto[0].id && req.body.precio[0].producto[0].id.length > 0) {
-              precioExists.precio[0].producto[0].id = req.body.precio[0].producto[0].id;
-            }
-            if (req.body.precio && req.body.precio.length > 0 && req.body.precio[0].producto && req.body.precio[0].producto.length > 0 && req.body.precio[0].producto[0].product && req.body.precio[0].producto[0].product.length > 0) {
-              precioExists.precio[0].producto[0].product = req.body.precio[0].producto[0].product;
-            }
-            if (req.body.precio && req.body.precio.length > 0 && req.body.precio[0].producto && req.body.precio[0].producto.length > 0 && req.body.precio[0].producto[0].months && req.body.precio[0].producto[0].months.length > 0) {
-              precioExists.precio[0].producto[0].months = req.body.precio[0].producto[0].months;
-            }
-      
-            var id = precioExists._id;
-            await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { precioData: id } }, { new: true });
-            await precioExists.save();
-      
-            return res.status(200).send({ message: 'Precio updated successfully' });
+          if (precio) {
+            // If a document with the same countryName and idUser already exists, update it
+            precio.stats = stats;
+            await precio.save();
           } else {
-            const newPrecio = new Precio({
-              precio: req.body.precio,
-              idUser: req.body.idUser
-            });
-      
-            var id = newPrecio._id;
-            await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { precioData: id } }, { new: true });
-            await newPrecio.save();
-      
-            return res.status(200).send({ message: 'Precio created successfully' });
+            // Otherwise, create a new document
+            precio = new Precio({ countryName, stats, idUser });
+            await precio.save();
           }
-        } catch (error) {
-          return res.status(500).send({ error: error.message });
+          
+          // Update precioData property in user model
+          let user = await User.findByIdAndUpdate(
+            idUser,
+            { $addToSet: { precioData: precio } },
+            { new: true }
+          );
+      
+          return res.status(200).json({ success: true, data: precio });
+        } catch (err) {
+          console.error(err);
+          return res.status(500).json({ success: false, error: 'Server Error' });
         }
       },
+      
+
       
 
     eachPrecio: (req, res) => {
@@ -57,6 +45,19 @@ const precioController = {
             .then(data => res.json({ success: true, response: data }))
             .catch(error => res.json({ succes: false, error }))
     },
+
+    obtenerPrecio: async (req, res) => {
+        const { id } = req.params;
+        console.log(id)
+
+        try {
+            const precio = await Precio.findById(id);
+            res.json(precio);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Error al obtener el precio.' });
+        }
+    }
 
 }
 
