@@ -5,33 +5,35 @@ const User = require("../models/User")
 const volumenController = {
 
     newVolumen: async (req, res) => {
+        const { countryName, stats, idUser } = req.body;
+
         try {
-            const volumenExists = await Volumen.findOne({ idUser: req.body.idUser });
-            if (volumenExists) {
-                if (req.body.volumen && req.body.volumen.trim().length !== 0) {
-                    volumenExists.volumen = req.body.volumen;
-                }
-                var id = volumenExists._id
-                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { volumenData: id } }, { new: true })
+            let volumen = await Volumen.findOne({ countryName, idUser });
 
-                await volumenExists.save();
-                return res.status(200).send({ message: 'PuestosQ updated successfully' });
+            if (volumen) {
+                // If a document with the same countryName and idUser already exists, update it
+                volumen.stats = stats;
+                await volumen.save();
             } else {
-                const newVolumen = new Volumen({
-                    volumen: req.body.volumen,
-                    idUser: req.body.idUser
-                });
-
-                var id = newVolumen._id
-                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { volumenData: id } }, { new: true })
-                await newVolumen.save();
-                return res.status(200).send({ message: 'PuestosQ created successfully' });
+                // Otherwise, create a new document
+                volumen = new Volumen({ countryName, stats, idUser });
+                await volumen.save();
             }
-        } catch (error) {
-            return res.status(500).send({ error: error.message });
-        }
 
+            // Update volumenData property in user model
+            let user = await User.findByIdAndUpdate(
+                idUser,
+                { $addToSet: { volumenData: volumen } },
+                { new: true }
+            );
+
+            return res.status(200).json({ success: true, data: volumen });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, error: 'Server Error' });
+        }
     },
+
 
     eachVolumen: (req, res) => {
         const { id } = req.params
