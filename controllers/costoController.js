@@ -5,32 +5,33 @@ const User = require("../models/User")
 const costoController = {
 
     newCosto: async (req, res) => {
+        const { countryName, stats, idUser } = req.body;
+
         try {
-            const costoExists = await Costo.findOne({ idUser: req.body.idUser });
-            if (costoExists) {
-                if (req.body.costo && req.body.costo.trim().length !== 0) {
-                    costoExists.costo = req.body.costo;
-                }
-                var id = costoExists._id
-                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { costoData: id } }, { new: true })
+            let costo = await Costo.findOne({ countryName, idUser });
 
-                await costoExists.save();
-                return res.status(200).send({ message: 'Costo updated successfully' });
+            if (costo) {
+                // If a document with the same countryName and idUser already exists, update it
+                costo.stats = stats;
+                await costo.save();
             } else {
-                const newCosto = new Costo({
-                    costo: req.body.costo,
-                    idUser: req.body.idUser
-                });
-
-                var id = newCosto._id
-                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { costoData: id } }, { new: true })
-                await newCosto.save();
-                return res.status(200).send({ message: 'Costo created successfully' });
+                // Otherwise, create a new document
+                costo = new Costo({ countryName, stats, idUser });
+                await costo.save();
             }
-        } catch (error) {
-            return res.status(500).send({ error: error.message });
-        }
 
+            // Update costoData property in user model
+            let user = await User.findByIdAndUpdate(
+                idUser,
+                { $addToSet: { costoData: costo } },
+                { new: true }
+            );
+
+            return res.status(200).json({ success: true, data: costo });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ success: false, error: 'Server Error' });
+        }
     },
 
     eachCosto: (req, res) => {
