@@ -7,37 +7,40 @@ const precioController = {
 
 
   newPrecio: async (req, res) => {
-    const { countryName, stats, idUser } = req.body;
-
+    const { precios, idUser } = req.body;
+  
     try {
-      let precio = await Precio.findOne({ countryName, idUser });
-
-      if (precio) {
-        // If a document with the same countryName and idUser already exists, update it
-        precio.stats = stats;
-        await precio.save();
-      } else {
-        // Otherwise, create a new document
-        precio = new Precio({ countryName, stats, idUser });
-        await precio.save();
-      }
-
+      // Sort precios array alphabetically by countryName
+      precios.sort((a, b) => a.countryName.localeCompare(b.countryName));
+  
+      // Update or create new Precio documents for each object in the precios array
+      const updatedPrecios = await Promise.all(
+        precios.map(async (precio) => {
+          const { countryName, stats } = precio;
+          let updatedPrecio = await Precio.findOne({ countryName, idUser });
+          if (updatedPrecio) {
+            updatedPrecio.stats = stats;
+          } else {
+            updatedPrecio = new Precio({ countryName, stats, idUser });
+          }
+          return updatedPrecio.save();
+        })
+      );
+  
       // Update precioData property in user model
       let user = await User.findByIdAndUpdate(
         idUser,
-        { $addToSet: { precioData: precio } },
+        { $set: { precioData: updatedPrecios } },
         { new: true }
       ).populate('precioData');
-
-      // Sort precioData array alphabetically by countryName
-      user.precioData.sort((a, b) => a.countryName.localeCompare(b.countryName));
-
-      return res.status(200).json({ success: true, data: precio });
+  
+      return res.status(200).json({ success: true, data: updatedPrecios });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ success: false, error: 'Server Error' });
     }
   },
+  
 
 
 
