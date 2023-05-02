@@ -69,7 +69,7 @@ const userController = {
 
   eachUser: (req, res) => {
     const id = req.params.id
-    User.findById(id).populate('assumptionData').populate('bienesData').populate('volumenData').populate('costoData').populate('gastosData').populate('precioData').populate('puestosQData').populate('puestosVData').populate('assumpFinancierasData')
+    User.findById(id).populate('assumptionData').populate('bienesData').populate({ path: 'volumenData', populate: { path: 'countryName', options: { sort: { name: 'asc' } } } }).populate('costoData').populate('gastosData').populate({ path: 'precioData', populate: { path: 'countryName', options: { sort: { name: 'asc' } } } }).populate('puestosQData').populate('puestosVData').populate('assumpFinancierasData')
     .then(data => {
       return res.json({ success: true, response: data })
     })
