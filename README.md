@@ -68,7 +68,20 @@ Devuelve toda la informacion del usuarios de los formularios a medidas que se va
     idUser: ""
 }
 ```
-
+## /gastosgeneral - POST
+```
+{
+	"centroDeGastos":{
+		"administracion":false,
+		"operaciones":false,
+		"comercial":false,
+		"marketing":false,
+		"pAndD":false
+	},
+	"cargasSociales":0,
+	"idUser":"64552abc9a52b16d10cadf8e"
+}
+```
 ## /costo - POST
 ```
 {
