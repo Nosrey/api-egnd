@@ -9,6 +9,7 @@ const puestosQController = require('../controllers/puestosQController')
 const puestosVController = require('../controllers/puestosVController')
 const userController = require('../controllers/userController')
 const volumenController = require('../controllers/volumenController')
+const gastosGeneralController = require('../controllers/gastosGeneralController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -52,6 +53,9 @@ router.route('/puestosv')
     
 router.route('/assumpfinanciera')
     .post(assumpFinancierasController.newAssumpFinancieras)
+
+    router.route('/gastosgeneral')
+    .post(gastosGeneralController.newGastosGeneral)
 
 
 module.exports = router
