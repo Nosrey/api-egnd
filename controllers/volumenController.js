@@ -8,19 +8,13 @@ const volumenController = {
         const { countryName, stats, idUser } = req.body;
 
         try {
-            let volumen = await Volumen.findOne({ countryName, idUser });
+            let volumen = await Volumen.findOneAndUpdate(
+                { idUser },
+                { countryName, stats },
+                { new: true, upsert: true }
+            );
 
-            if (volumen) {
-                // If a document with the same countryName and idUser already exists, update it
-                volumen.stats = stats;
-                await volumen.save();
-            } else {
-                // Otherwise, create a new document
-                volumen = new Volumen({ countryName, stats, idUser });
-                await volumen.save();
-            }
-
-            // Update volumenData property in user model
+            // Update gastosGeneralData property in user model
             let user = await User.findByIdAndUpdate(
                 idUser,
                 { $addToSet: { volumenData: volumen } },
