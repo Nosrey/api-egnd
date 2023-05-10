@@ -5,7 +5,7 @@ const User = require("../models/User")
 const costoController = {
 
     newCosto: async (req, res) => {
-        const { countryName, stats, idUser } = req.body;
+        const { countryName, stats, idUser, totalPriceMonth } = req.body;
 
         try {
             let costo = await Costo.findOne({ countryName, idUser });
@@ -16,7 +16,7 @@ const costoController = {
                 await costo.save();
             } else {
                 // Otherwise, create a new document
-                costo = new Costo({ countryName, stats, idUser });
+                costo = new Costo({ countryName, stats, idUser, totalPriceMonth});
                 await costo.save();
             }
 
