@@ -6,21 +6,27 @@ const precioController = {
 
   newPrecio: async (req, res) => {
     const { countryName, stats, idUser } = req.body;
-
+  
     try {
-      let precio = await Precio.findOneAndUpdate(
-        { idUser },
-        { countryName, stats },
-        { new: true, upsert: true }
-      );
+      let precio = await Precio.findOne({ countryName, idUser });
 
-      // Update gastosGeneralData property in user model
+      if (precio) {
+        // If a document with the same countryName and idUser already exists, update it
+        precio.stats = stats;
+        await precio.save();
+      } else {
+        // Otherwise, create a new document
+        precio = new Precio({ countryName, stats, idUser });
+        await precio.save();
+      }
+
+      // Update precioData property in user model
       let user = await User.findByIdAndUpdate(
         idUser,
         { $addToSet: { precioData: precio } },
         { new: true }
       );
-
+  
       return res.status(200).json({ success: true, data: precio });
     } catch (err) {
       console.error(err);
