@@ -6,27 +6,26 @@ const precioController = {
 
   newPrecio: async (req, res) => {
     const { countryName, stats, idUser } = req.body;
-
+  
     try {
       let precio = await Precio.findOneAndUpdate(
-        { idUser },
-        { countryName, stats },
+        { idUser, countryName }, // Buscar el precio existente con el mismo idUser y countryName
+        { stats },
         { new: true, upsert: true }
       );
-
-      // Update gastosGeneralData property in user model
+  
       let user = await User.findByIdAndUpdate(
         idUser,
-        { $addToSet: { precioData: precio } },
+        { $addToSet: { precioData: precio } }, // Agregar el objeto "precio" al arreglo "precioData" del modelo de usuario sin duplicados
         { new: true }
       );
-
+  
       return res.status(200).json({ success: true, data: precio });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ success: false, error: 'Server Error' });
     }
-  },
+  },  
 
 
   eachPrecio: (req, res) => {
