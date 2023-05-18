@@ -4,8 +4,6 @@ const User = require("../models/User")
 
 const gastosController = {
 
-
-
     newGastosGeneral: async (req, res) => {
         const { centroDeGastos, cargasSociales, idUser } = req.body;
       
