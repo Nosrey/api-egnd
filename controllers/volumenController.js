@@ -28,6 +28,29 @@ const volumenController = {
         }
     },
 
+    deleteVolumen: async (req, res) => {
+        const { countryName, idUser } = req.body;
+
+        try {
+            await Volumen.deleteMany({ countryName, idUser });
+
+            // Obtener el usuario correspondiente
+            const user = await User.findOne({ _id: idUser });
+
+            // Filtrar el array precioData eliminando el objeto correspondiente
+            user.volumenData = user.volumenData.filter((volumen) => {
+                return volumen.countryName !== countryName;
+            });
+
+            // Guardar los cambios en el usuario
+            await user.save();
+
+            res.status(200).json({ success: true, message: 'Registros eliminados correctamente.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ success: false, error: 'Error al eliminar los registros.' });
+        }
+    },
 
     eachVolumen: (req, res) => {
         const { id } = req.params

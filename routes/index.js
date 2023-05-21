@@ -34,6 +34,7 @@ router.route('/assumpventa')
 
 router.route('/volumen')
     .post(volumenController.newVolumen)
+    .delete(volumenController.deleteVolumen)
 
 router.route('/bienes')
     .post(bienesController.newBienes)
