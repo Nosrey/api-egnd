@@ -8,23 +8,22 @@ const volumenController = {
         const { countryName, stats, idUser } = req.body;
 
         try {
-            let volumen = await Volumen.findOneAndUpdate(
-                { idUser },
-                { countryName, stats },
-                { new: true, upsert: true }
-            );
-
-            // Update gastosGeneralData property in user model
-            let user = await User.findByIdAndUpdate(
-                idUser,
-                { $addToSet: { volumenData: volumen } },
-                { new: true }
-            );
-
-            return res.status(200).json({ success: true, data: volumen });
+          let volumen = await Volumen.findOneAndUpdate(
+            { idUser, countryName }, // Buscar el precio existente con el mismo idUser y countryName
+            { stats },
+            { new: true, upsert: true }
+          );
+    
+          let user = await User.findByIdAndUpdate(
+            idUser,
+            { $addToSet: { volumenData: volumen } }, // Agregar el objeto "precio" al arreglo "precioData" del modelo de usuario sin duplicados
+            { new: true }
+          );
+    
+          return res.status(200).json({ success: true, data: volumen });
         } catch (err) {
-            console.error(err);
-            return res.status(500).json({ success: false, error: 'Server Error' });
+          console.error(err);
+          return res.status(500).json({ success: false, error: 'Server Error' });
         }
     },
 
