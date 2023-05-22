@@ -4,7 +4,6 @@ const costoSchema = new mongoose.Schema({
 
     countryName: { type: String },
     stats: {type: Array},
-    totalPriceMonth:{type:Array},
     idUser: [{ type: mongoose.Schema.ObjectId, ref: "user" }],
 
 })

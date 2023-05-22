@@ -41,6 +41,7 @@ router.route('/bienes')
 
 router.route('/costo')
     .post(costoController.newCosto)
+    .delete(costoController.deleteCosto)
 
 router.route('/gastos')
     .post(gastoController.newGasto)

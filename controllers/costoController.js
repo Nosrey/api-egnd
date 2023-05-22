@@ -5,25 +5,18 @@ const User = require("../models/User")
 const costoController = {
 
     newCosto: async (req, res) => {
-        const { countryName, stats, idUser, totalPriceMonth } = req.body;
+        const { countryName, stats, idUser } = req.body;
 
         try {
-            let costo = await Costo.findOne({ countryName, idUser });
+            let costo = await Costo.findOneAndUpdate(
+                { idUser, countryName }, // Buscar el precio existente con el mismo idUser y countryName
+                { stats },
+                { new: true, upsert: true }
+            );
 
-            if (costo) {
-                // If a document with the same countryName and idUser already exists, update it
-                costo.stats = stats;
-                await costo.save();
-            } else {
-                // Otherwise, create a new document
-                costo = new Costo({ countryName, stats, idUser, totalPriceMonth});
-                await costo.save();
-            }
-
-            // Update costoData property in user model
             let user = await User.findByIdAndUpdate(
                 idUser,
-                { $addToSet: { costoData: costo } },
+                { $addToSet: { costoData: costo } }, // Agregar el objeto "precio" al arreglo "precioData" del modelo de usuario sin duplicados
                 { new: true }
             );
 
@@ -31,6 +24,30 @@ const costoController = {
         } catch (err) {
             console.error(err);
             return res.status(500).json({ success: false, error: 'Server Error' });
+        }
+    },
+
+    deleteCosto: async (req, res) => {
+        const { countryName, idUser } = req.body;
+
+        try {
+            await Costo.deleteMany({ countryName, idUser });
+
+            // Obtener el usuario correspondiente
+            const user = await User.findOne({ _id: idUser });
+
+            // Filtrar el array precioData eliminando el objeto correspondiente
+            user.costoData = user.costoData.filter((costo) => {
+                return costo.countryName !== countryName;
+            });
+
+            // Guardar los cambios en el usuario
+            await user.save();
+
+            res.status(200).json({ success: true, message: 'Registros eliminados correctamente.' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ success: false, error: 'Error al eliminar los registros.' });
         }
     },
 
