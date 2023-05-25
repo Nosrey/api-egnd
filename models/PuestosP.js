@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const PuestosPSchema = new mongoose.Schema({
 
-    puestosP: {type:Array},
+    puestosp: {type:Array},
     idUser: [{ type: mongoose.Schema.ObjectId, ref: "user" }],
 
 
