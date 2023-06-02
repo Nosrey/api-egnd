@@ -13,6 +13,9 @@ const gastosGeneralController = require('../controllers/gastosGeneralController'
 const puestosPxQController = require('../controllers/puestosPxQController')
 const GastosPorCCController = require('../controllers/gastosPorCCController')
 const PuestosPController = require('../controllers/puestosPController')
+const CapexPController = require('../controllers/capexPController')
+const CapexQ = require('../models/CapexQ')
+const CapexQController = require('../controllers/capexQController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -69,7 +72,13 @@ router.route('/puestospxq')
 router.route('/gastosporcc')
     .post(GastosPorCCController.newGastosPorCC)
 
-    router.route('/puestosp')
+router.route('/puestosp')
     .post(PuestosPController.newPuestosP)
+
+router.route('/capexp')
+    .post(CapexPController.newCapexP)
+
+router.route('/capexq')
+    .post(CapexQController.newCapexQ)
 
 module.exports = router

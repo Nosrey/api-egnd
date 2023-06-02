@@ -18,7 +18,9 @@ const userSchema = new mongoose.Schema({
     assumpFinancierasData: [{ type: mongoose.Schema.ObjectId, ref: "assumpfinancieras" }],
     gastosGeneralData: [{ type: mongoose.Schema.ObjectId, ref: "gastosGeneral" }],
     gastosPorCCData: [{ type: mongoose.Schema.ObjectId, ref: "gastosPorCC" }],
-    puestosPData:[{ type: mongoose.Schema.ObjectId, ref: "puestosP" }]
+    puestosPData:[{ type: mongoose.Schema.ObjectId, ref: "puestosP" }],
+    capexPData:[{ type: mongoose.Schema.ObjectId, ref: "capexP" }],
+    capexQData:[{ type: mongoose.Schema.ObjectId, ref: "capexQ" }]
 
    
 })
