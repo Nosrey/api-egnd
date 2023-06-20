@@ -16,6 +16,7 @@ const PuestosPController = require('../controllers/puestosPController')
 const CapexPController = require('../controllers/capexPController')
 const CapexQ = require('../models/CapexQ')
 const CapexQController = require('../controllers/capexQController')
+const mercadoController = require('../controllers/mercadoController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -80,5 +81,8 @@ router.route('/capexp')
 
 router.route('/capexq')
     .post(CapexQController.newCapexQ)
+
+    router.route('/mercado')
+    .post(mercadoController.newMercado)
 
 module.exports = router
