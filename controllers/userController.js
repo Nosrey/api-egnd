@@ -79,7 +79,6 @@ const userController = {
 
   updateBusinessInfo: async (req, res) => {
     const id = req.params.id;
-    const { businessName, businessInfo, assumptionInfo, volumenInfo } = req.body;
     const uploadPromise = new Promise((resolve, reject) => {
       upload.single('image')(req, res, function (err) {
         if (err instanceof multer.MulterError) {
@@ -99,6 +98,7 @@ const userController = {
   
     try {
       await uploadPromise; // Wait for image upload to complete
+      const { businessName, businessInfo, assumptionInfo, volumenInfo } = req.body;
       const imagePath = req.file ? req.file.location : null;
   
       const updatedUser = await User.findByIdAndUpdate(
@@ -107,12 +107,17 @@ const userController = {
         { new: true }
       );
   
+      if (!updatedUser) {
+        return res.status(404).json({ success: false, error: "User not found." });
+      }
+  
       return res.json({ success: true, response: updatedUser });
     } catch (error) {
       console.log(error);
-      return res.json({ success: false, error: error.message });
+      return res.status(500).json({ success: false, error: error.message });
     }
   },
+  
   
   allUsers: (req, res) => {
     User.find()
