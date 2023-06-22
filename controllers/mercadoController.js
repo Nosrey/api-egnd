@@ -6,7 +6,7 @@ const mercadoController = {
 
     newMercado: async (req, res) => {
         try {
-            const mercadoExists = await Gastos.findOne({ idUser: req.body.idUser });
+            const mercadoExists = await Mercado.findOne({ idUser: req.body.idUser });
             if (mercadoExists) {
                 if (req.body.mercado && req.body.mercado.trim().length !== 0) {
                     mercadoExists.mercado = req.body.mercado;
