@@ -101,9 +101,11 @@ const userController = {
       const { businessName, businessInfo, assumptionInfo, volumenInfo } = req.body;
       const imagePath = req.file ? req.file.location : null;
   
+      const parsedBusinessInfo = JSON.parse(businessInfo); // Parse businessInfo as JSON
+  
       const updatedUser = await User.findByIdAndUpdate(
         id,
-        { businessName, businessInfo, assumptionInfo, volumenInfo, imagePath },
+        { businessName, businessInfo: parsedBusinessInfo, assumptionInfo, volumenInfo, imagePath },
         { new: true }
       );
   
