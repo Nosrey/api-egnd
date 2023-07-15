@@ -12,7 +12,5 @@ app.use(express.urlencoded({limit: '25mb'}));
 
 app.use('/api', router)
 
-// const port = process.env.PORT
-// const host = process.env.HOST || '0.0.0.0'
 
-app.listen(process.env.PORT || 5000)
+app.listen(8080)
