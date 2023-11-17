@@ -17,6 +17,7 @@ const CapexPController = require('../controllers/capexPController')
 const CapexQ = require('../models/CapexQ')
 const CapexQController = require('../controllers/capexQController')
 const mercadoController = require('../controllers/mercadoController')
+const prestamosController = require('../controllers/prestamosController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -82,7 +83,14 @@ router.route('/capexp')
 router.route('/capexq')
     .post(CapexQController.newCapexQ)
 
-    router.route('/mercado')
+router.route('/mercado')
     .post(mercadoController.newMercado)
+
+router.route('/prestamos')
+    .post(prestamosController.newPrestamos)
+
+router.route('/prestamos/:id')
+    .put(prestamosController.editPrestamos)
+    .delete(prestamosController.deletePrestamos)
 
 module.exports = router
