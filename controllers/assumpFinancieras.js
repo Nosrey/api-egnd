@@ -24,9 +24,12 @@ const assumpFinancierasController = {
                 if (req.body.inversion && req.body.inversion.trim().length !== 0) {
                     assumpFinancierasExists.inversion = req.body.inversion;
                 }
-               
+                if (req.body.impGanancias && req.body.impGanancias.trim().length !== 0) {
+                    assumpFinancierasExists.impGanancias = req.body.impGanancias;
+                }
+
                 var id = assumpFinancierasExists._id
-                await User.findOneAndUpdate({_id: req.body.idUser},{ $set: { assumpFinancierasData: id } }, { new: true })
+                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { assumpFinancierasData: id } }, { new: true })
                 await assumpFinancierasExists.save();
                 return res.status(200).send({ message: 'Assumption Financieras updated successfully' });
             } else {
@@ -36,11 +39,12 @@ const assumpFinancierasController = {
                     pagoServicio: req.body.pagoServicio,
                     stock: req.body.stock,
                     inversion: req.body.inversion,
+                    impGanancias: req.body.impGanancias,
                     idUser: req.body.idUser
                 });
 
                 var id = newAssumpFinnacieras._id
-                await User.findOneAndUpdate({_id: req.body.idUser},{ $set: { assumpFinancierasData: id } }, { new: true })
+                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { assumpFinancierasData: id } }, { new: true })
                 await newAssumpFinnacieras.save();
                 return res.status(200).send({ message: 'Assumption Financieras created successfully' });
             }

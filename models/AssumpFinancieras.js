@@ -7,6 +7,7 @@ const assumpFinancierasSchema = new mongoose.Schema({
     pagoServicio: { type: Object },
     stock: { type: String },
     inversion: { type: Object },
+    impGanancias: { type: String },
     idUser: [{ type: mongoose.Schema.ObjectId, ref: "user" }],
 
 
