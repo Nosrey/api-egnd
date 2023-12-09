@@ -22,8 +22,8 @@ const userSchema = new mongoose.Schema({
     capexPData: [{ type: mongoose.Schema.ObjectId, ref: "capexP" }],
     capexQData: [{ type: mongoose.Schema.ObjectId, ref: "capexQ" }],
     mercadoData: [{ type: mongoose.Schema.ObjectId, ref: "mercado" }],
-    prestamos: [{ type: mongoose.Schema.ObjectId, ref: "prestamos" }]
-
+    prestamos: [{ type: mongoose.Schema.ObjectId, ref: "prestamos" }],
+    pl: [{ type: mongoose.Schema.ObjectId, ref: "pl" }]
 
 
 
