@@ -7,56 +7,32 @@ const assumpFinancierasController = {
 
     newAssumpFinancieras: async (req, res) => {
         try {
+            // Buscar si ya existe un registro para el usuario
             const assumpFinancierasExists = await AssumpFinancieras.findOne({ idUser: req.body.idUser });
+
             if (assumpFinancierasExists) {
-
-                if (req.body.cobranzas && Object.keys(req.body.cobranzas).length !== 0) {
-                    assumpFinancierasExists.cobranzas = req.body.cobranzas;
-                }
-                
-                if (req.body.pagoProducto && req.body.pagoProducto.trim().length !== 0) {
-                    assumpFinancierasExists.pagoProducto = req.body.pagoProducto;
-                }
-                if (req.body.pagoServicio && req.body.pagoServicio.trim().length !== 0) {
-                    assumpFinancierasExists.pagoServicio = req.body.pagoServicio;
-                }
-                if (req.body.stock && req.body.stock.trim().length !== 0) {
-                    assumpFinancierasExists.stock = req.body.stock;
-                }
-                if (req.body.inversion && req.body.inversion.trim().length !== 0) {
-                    assumpFinancierasExists.inversion = req.body.inversion;
-                }
-                if (req.body.impGanancias && req.body.impGanancias.trim().length !== 0) {
-                    assumpFinancierasExists.impGanancias = req.body.impGanancias;
-                }
-                if (req.body.impGanancias && req.body.impGanancias.trim().length !== 0) {
-                    assumpFinancierasExists.impGanancias = req.body.impGanancias;
-                }
-
-                var id = assumpFinancierasExists._id
-                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { assumpFinancierasData: id } }, { new: true })
+                // Actualizar el registro existente con los nuevos datos proporcionados
+                Object.assign(assumpFinancierasExists, req.body);
                 await assumpFinancierasExists.save();
                 return res.status(200).send({ message: 'Assumption Financieras updated successfully' });
             } else {
-                const newAssumpFinnacieras = new AssumpFinancieras({
-                    cobranzas: req.body.cobranzas,
-                    pagoProducto: req.body.pagoProducto,
-                    pagoServicio: req.body.pagoServicio,
-                    stock: req.body.stock,
-                    inversion: req.body.inversion,
-                    impGanancias: req.body.impGanancias,
-                    idUser: req.body.idUser
-                });
+                // Crear un nuevo registro
+                const newAssumpFinancieras = new AssumpFinancieras(req.body);
+                await newAssumpFinancieras.save();
 
-                var id = newAssumpFinnacieras._id
-                await User.findOneAndUpdate({ _id: req.body.idUser }, { $set: { assumpFinancierasData: id } }, { new: true })
-                await newAssumpFinnacieras.save();
+                // Actualizar el campo 'assumpFinancierasData' en el documento de usuario
+                const id = newAssumpFinancieras._id;
+                await User.findOneAndUpdate(
+                    { _id: req.body.idUser },
+                    { $set: { assumpFinancierasData: id } },
+                    { new: true }
+                );
+
                 return res.status(200).send({ message: 'Assumption Financieras created successfully' });
             }
         } catch (error) {
             return res.status(500).send({ error: error.message });
         }
-
     },
 
     eachBienes: (req, res) => {
