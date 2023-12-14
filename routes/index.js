@@ -19,6 +19,7 @@ const CapexQController = require('../controllers/capexQController')
 const mercadoController = require('../controllers/mercadoController')
 const prestamosController = require('../controllers/prestamosController')
 const plController = require('../controllers/plController')
+const workingCapitalController = require('../controllers/workingCapitalController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -100,5 +101,11 @@ router.route('/pl')
 
 router.route('/pl/:id')
     .get(plController.eachPL)
+
+router.route('/workingcapital')
+    .post(workingCapitalController.newWorkingCapital)
+
+router.route('/workingcapital/:id')
+    .get(workingCapitalController.eachWorkingCapital)
 
 module.exports = router

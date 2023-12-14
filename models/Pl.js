@@ -30,6 +30,6 @@ const plSchema = new mongoose.Schema({
     idUser: [{ type: mongoose.Schema.ObjectId, ref: "user" }],
 })
 
-const AssumptionVenta = mongoose.model('pl', plSchema)
+const Pl = mongoose.model('pl', plSchema)
 
-module.exports = AssumptionVenta
+module.exports = Pl

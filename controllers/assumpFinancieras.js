@@ -9,9 +9,11 @@ const assumpFinancierasController = {
         try {
             const assumpFinancierasExists = await AssumpFinancieras.findOne({ idUser: req.body.idUser });
             if (assumpFinancierasExists) {
-                if (req.body.cobranzas && req.body.cobranzas.trim().length !== 0) {
+
+                if (req.body.cobranzas && Object.keys(req.body.cobranzas).length !== 0) {
                     assumpFinancierasExists.cobranzas = req.body.cobranzas;
                 }
+                
                 if (req.body.pagoProducto && req.body.pagoProducto.trim().length !== 0) {
                     assumpFinancierasExists.pagoProducto = req.body.pagoProducto;
                 }
@@ -23,6 +25,9 @@ const assumpFinancierasController = {
                 }
                 if (req.body.inversion && req.body.inversion.trim().length !== 0) {
                     assumpFinancierasExists.inversion = req.body.inversion;
+                }
+                if (req.body.impGanancias && req.body.impGanancias.trim().length !== 0) {
+                    assumpFinancierasExists.impGanancias = req.body.impGanancias;
                 }
                 if (req.body.impGanancias && req.body.impGanancias.trim().length !== 0) {
                     assumpFinancierasExists.impGanancias = req.body.impGanancias;
