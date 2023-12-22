@@ -94,7 +94,6 @@ const userController = {
       // Actualizar el token en el modelo del usuario
       user.confirmationToken = confirmationToken;
       await user.save();
-      console.log(user.confirmationToken)
       // Contenido del correo electrónico
       const confirmationUrl = `https://app.egndfinance.com/activar-cuenta/${user.confirmationToken}`;
       await enviarMail.enviar({
