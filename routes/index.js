@@ -30,6 +30,10 @@ router.route('/signup')
 router.route('/signin')
     .post(userController.signIn)
 
+router.route('/confirm-email/:token')
+    .post(userController.confirmEmail)
+
+
 router.route('/users/:id')
     .get(userController.eachUser)
     .put(userController.updateBusinessInfo)

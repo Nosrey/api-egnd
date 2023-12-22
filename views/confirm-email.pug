@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        style 
+            include ./email.css
+    body 
+        h3 Activa tu correo 🔐
+        p Hola, te has registrado en EGND, haz click en el siguiente enlace para activar tu cuenta: 
+        a(href=`${confirmationUrl}`) Activar cuenta
+        br
+        p O copia y pega este token en tu aplicación: #{confirmationToken}
+        p Si no solicitaste este email, puedes ignorarlo.
+        br
+        p.footer EGND

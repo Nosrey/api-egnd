@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
     mail: { type: String },
     password: { type: String },
+    confirmed: { type: Boolean, default: false },
+    confirmationToken: { type: String, default: null },
     businessName: { type: String },
     businessInfo: { type: Array },
     imagePath: { type: String },
