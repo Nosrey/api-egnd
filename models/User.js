@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema({
     mercadoData: [{ type: mongoose.Schema.ObjectId, ref: "mercado" }],
     prestamos: [{ type: mongoose.Schema.ObjectId, ref: "prestamos" }],
     plData: [{ type: mongoose.Schema.ObjectId, ref: "pl" }],
-    workingCapitalData: [{ type: mongoose.Schema.ObjectId, ref: "workingCapital" }]
+    workingCapitalData: [{ type: mongoose.Schema.ObjectId, ref: "workingCapital" }],
+    cashflowIndirectoData: [{ type: mongoose.Schema.ObjectId, ref: "cashflowindirecto" }]
 
 
 })

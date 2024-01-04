@@ -20,6 +20,7 @@ const mercadoController = require('../controllers/mercadoController')
 const prestamosController = require('../controllers/prestamosController')
 const plController = require('../controllers/plController')
 const workingCapitalController = require('../controllers/workingCapitalController')
+const cashflowIndirectoController = require('../controllers/cashflowIndirectoController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -111,5 +112,11 @@ router.route('/workingcapital')
 
 router.route('/workingcapital/:id')
     .get(workingCapitalController.eachWorkingCapital)
+
+router.route('/cashflowindirecto')
+    .post(cashflowIndirectoController.newCashflowIndirecto)
+
+router.route('/cashflowindirecto/:id')
+    .get(cashflowIndirectoController.eachCashflowIndirecto)
 
 module.exports = router

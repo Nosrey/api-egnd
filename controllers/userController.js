@@ -135,7 +135,7 @@ const userController = {
 
   eachUser: (req, res) => {
     const id = req.params.id
-    User.findById(id).populate('assumptionData').populate('bienesData').populate('volumenData').populate('costoData').populate('gastosData').populate('precioData').populate('puestosQData').populate('puestosVData').populate('puestosPxQData').populate('assumpFinancierasData').populate('gastosGeneralData').populate('gastosPorCCData').populate('puestosPData').populate('capexPData').populate('capexQData').populate('mercadoData').populate('prestamos').populate('plData').populate('workingCapitalData').then(data => {
+    User.findById(id).populate('assumptionData').populate('bienesData').populate('volumenData').populate('costoData').populate('gastosData').populate('precioData').populate('puestosQData').populate('puestosVData').populate('puestosPxQData').populate('assumpFinancierasData').populate('gastosGeneralData').populate('gastosPorCCData').populate('puestosPData').populate('capexPData').populate('capexQData').populate('mercadoData').populate('prestamos').populate('plData').populate('workingCapitalData').populate('cashflowIndirectoData').then(data => {
       return res.json({ success: true, response: data })
     })
       .catch(error => {
