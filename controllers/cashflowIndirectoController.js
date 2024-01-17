@@ -16,7 +16,7 @@ const cashflowIndirectoController = {
                 return res.status(200).send({ message: 'PL updated successfully' });
             } else {
                 // Crea un nuevo registro de PL con los datos proporcionados
-                const newCashflowIndirecto = new PL(req.body);
+                const newCashflowIndirecto = new CashflowIndirecto(req.body);
 
                 // Guarda el nuevo registro de PL
                 await newCashflowIndirecto.save();
