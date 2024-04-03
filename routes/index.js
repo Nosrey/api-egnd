@@ -21,6 +21,7 @@ const prestamosController = require('../controllers/prestamosController')
 const plController = require('../controllers/plController')
 const workingCapitalController = require('../controllers/workingCapitalController')
 const cashflowIndirectoController = require('../controllers/cashflowIndirectoController')
+const balanceController = require('../controllers/balanceController')
 // const multer = require('multer');
 // const upload = multer();
 const router = express.Router()
@@ -118,5 +119,11 @@ router.route('/cashflowindirecto')
 
 router.route('/cashflowindirecto/:id')
     .get(cashflowIndirectoController.eachCashflowIndirecto)
+
+router.route('/balance')
+    .post(balanceController.newBalance)
+
+router.route('/balance/:id')
+    .get(balanceController.eachBalance)
 
 module.exports = router

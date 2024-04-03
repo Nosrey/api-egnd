@@ -7,6 +7,7 @@ const PrestamosSchema = new mongoose.Schema({
     monto: { type: String },
     plazo: { type: String },
     tasaAnual: { type: String },
+    yearInicio: { type: String },
     idUser: [{ type: mongoose.Schema.ObjectId, ref: "user" }],
 
 })

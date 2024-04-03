@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema({
     prestamos: [{ type: mongoose.Schema.ObjectId, ref: "prestamos" }],
     plData: [{ type: mongoose.Schema.ObjectId, ref: "pl" }],
     workingCapitalData: [{ type: mongoose.Schema.ObjectId, ref: "workingCapital" }],
-    cashflowIndirectoData: [{ type: mongoose.Schema.ObjectId, ref: "cashflowindirecto" }]
-
+    cashflowIndirectoData: [{ type: mongoose.Schema.ObjectId, ref: "cashflowindirecto" }],
+    balanceData: [{ type: mongoose.Schema.ObjectId, ref: "balance" }]
 
 })
 

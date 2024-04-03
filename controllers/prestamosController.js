@@ -13,6 +13,7 @@ const prestamosController = {
                 monto: req.body.monto,
                 plazo: req.body.plazo,
                 tasaAnual: req.body.tasaAnual,
+                yearInicio: req.body.yearInicio,
                 idUser: req.body.idUser
             });
             var id = newPrestamos._id
@@ -42,6 +43,7 @@ const prestamosController = {
                 monto: req.body.monto || prestamoExistente.monto,
                 plazo: req.body.plazo || prestamoExistente.plazo,
                 tasaAnual: req.body.tasaAnual || prestamoExistente.tasaAnual,
+                yearInicio: req.body.yearInicio || prestamoExistente.yearInicio
                 // Otros campos que puedan ser editados
             }, { new: true });
 
